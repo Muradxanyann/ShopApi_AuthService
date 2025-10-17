@@ -12,11 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
-
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine($"JWT KEY = [{builder.Configuration["JwtSettings:Key"]}]");
-Console.WriteLine($"JWT ISSUER = [{builder.Configuration["JwtSettings:Issuer"]}]");
-Console.WriteLine($"JWT AUDIENCE = [{builder.Configuration["JwtSettings:Audience"]}]");
+
 // ===Setting Seeder===
 builder.Services.Configure<AdminSettings>(
     builder.Configuration.GetSection("AdminUser"));

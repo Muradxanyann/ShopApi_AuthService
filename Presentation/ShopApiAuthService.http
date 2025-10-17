@@ -1,6 +1,0 @@
-@ShopApiAuthService_HostAddress = http://localhost:5001
-
-GET {{ShopApiAuthService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
