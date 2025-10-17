@@ -49,8 +49,8 @@ public class AuthRepository : IAuthRepository
         _logger.LogInformation("Request to save a new refresh token");
         using var connection = _connectionFactory.CreateConnection();
         const string sql = """
-                               INSERT INTO refresh_tokens (user_id, token, expires_at)
-                               VALUES (@UserId, @Token, @ExpiresAt)
+                                 INSERT INTO refresh_tokens (user_id, token, expires_at)
+                                 VALUES (@UserId, @Token, @ExpiresAt)
                            """;
 
         await connection.ExecuteAsync(sql, new
@@ -72,7 +72,7 @@ public class AuthRepository : IAuthRepository
                                SELECT user_id 
                                FROM refresh_tokens
                                WHERE token = @Token
-                                 AND expires_at > NOW()
+                               AND expires_at > NOW()
                                LIMIT 1
                            """;
         var command = new CommandDefinition(sql, new { Token = token }, cancellationToken: cancellationToken);

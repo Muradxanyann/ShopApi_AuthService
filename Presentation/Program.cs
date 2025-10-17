@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddOpenApi();
+//builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -106,20 +106,19 @@ builder.Host.UseSerilog();
 var app = builder.Build();
 
 
-
 // ==Admin Seeder==
 using var scope = app.Services.CreateScope();
 var initializer = scope.ServiceProvider.GetRequiredService<AdminInitializer>();
-await initializer.InitializeAsync();
+//await initializer.InitializeAsync();
 
 
 app.UseDeveloperExceptionPage();
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+//app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
+//app.Urls.Add("http://*:8080");
+
 
 // ===Middlewares===
 app.UseRouting();

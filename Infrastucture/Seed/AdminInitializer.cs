@@ -9,8 +9,7 @@ public class AdminInitializer
 { 
     private readonly AdminSettings _adminSettings;
     private readonly IConnectionFactory  _connectionFactory;
-
-
+    
     public AdminInitializer(IConnectionFactory connectionFactory, IOptions<AdminSettings> adminOptions)
     {
         _connectionFactory = connectionFactory;
@@ -20,10 +19,11 @@ public class AdminInitializer
     public async Task InitializeAsync()
     {
         using var connection = _connectionFactory.CreateConnection();
-        const string sql = "  SELECT * FROM users WHERE username = @Username";
+        const string sql = "SELECT * FROM public.users WHERE username = @Username";
 
         var existingUser = await connection.QueryFirstOrDefaultAsync<UserEntity>(
-            sql, new { _adminSettings.Username, _adminSettings.Email });
+            sql, new { _adminSettings.Username});
+        
 
         if (existingUser == null)
         {
@@ -31,7 +31,7 @@ public class AdminInitializer
 
             const string sql2 = """
                                 INSERT INTO users (username, email, password_hash, role, name, phone, age)
-                                                        VALUES (@Username, @Email, @PasswordHash, @Role, @Name, @Phone, @Age)
+                                VALUES (@Username, @Email, @PasswordHash, @Role, @Name, @Phone, @Age)
                                 """;
 
             await connection.ExecuteAsync(sql2, new
