@@ -48,6 +48,4 @@ public class UserService :  IUserService
         return await _userRepository.DeleteUserAsync(id, cancellationToken);
     }
     
-    
-    
 }

@@ -22,7 +22,11 @@ public class AuthService :  IAuthService
     private readonly IMapper _mapper;
     
     
-    public AuthService(IAuthRepository repository, IConfiguration configuration, ILogger<AuthService> logger, IMapper mapper)
+    public AuthService(
+        IAuthRepository repository,
+        IConfiguration configuration,
+        ILogger<AuthService> logger, IMapper mapper
+        )
     {
         _authRepository = repository;
         _configuration = configuration;

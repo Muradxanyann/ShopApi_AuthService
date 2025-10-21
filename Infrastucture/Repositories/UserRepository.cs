@@ -3,8 +3,6 @@ using Application.Interfaces.Repositories;
 using Dapper;
 using Domain;
 
-
-
 // ReSharper disable once CheckNamespace
 namespace Infrastructure;
 
@@ -21,10 +19,12 @@ public class UserRepository : IUserRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         connection.Open();
+        
         const string sql = """
                                SELECT user_id, name, age, phone, email, username, role
                                FROM users
                            """;
+        
         var command = new CommandDefinition(sql, cancellationToken: cancellationToken);
         return await connection.QueryAsync<UserEntity>(command);
     }
@@ -33,6 +33,7 @@ public class UserRepository : IUserRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         connection.Open();
+        
         const string sql = """
                                SELECT user_id, name, age, phone, email, username, role
                                FROM users WHERE user_id = @id
@@ -46,8 +47,10 @@ public class UserRepository : IUserRepository
     {
         using var connection = _connectionFactory.CreateConnection();
         connection.Open();
+        
         const string sql = "UPDATE users SET name = @Name, age = @Age, phone = @Phone, email = @Email " +
                            "WHERE user_id = @Id";
+        
         var command = new CommandDefinition(sql, new
         {
             Id = id,
@@ -56,6 +59,7 @@ public class UserRepository : IUserRepository
             user.Phone,
             user.Email
         }, cancellationToken: cancellationToken);
+        
         return await connection.ExecuteAsync(command);
     }
 

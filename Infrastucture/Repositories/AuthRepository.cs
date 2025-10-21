@@ -21,12 +21,14 @@ public class AuthRepository : IAuthRepository
     public async Task<int> CreateUserAsync(UserEntity entity,  CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating user with username {username}", entity.Username);
+        
         using var connection = _connectionFactory.CreateConnection();
         var sql = """
                     INSERT INTO users (name, age, phone, email, username, password_hash)
                     VALUES (@name, @age, @phone, @email, @username, @passwordHash)
                     RETURNING user_id
                   """;
+        
         var command = new CommandDefinition(sql, entity, cancellationToken: cancellationToken);
         return await connection.ExecuteScalarAsync<int>(command);
     }
@@ -34,6 +36,7 @@ public class AuthRepository : IAuthRepository
     public async Task<UserEntity?> LoginAsync(UserEntity entity, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Request to login");
+        
         var connection = _connectionFactory.CreateConnection();
         const string sql = """
                              SELECT user_id, name, age, phone, email, username, password_hash, role 
@@ -47,6 +50,7 @@ public class AuthRepository : IAuthRepository
     public async Task SaveRefreshTokenAsync(int userId, string refreshToken, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Request to save a new refresh token");
+        
         using var connection = _connectionFactory.CreateConnection();
         const string sql = """
                                  INSERT INTO refresh_tokens (user_id, token, expires_at)
@@ -60,6 +64,7 @@ public class AuthRepository : IAuthRepository
             ExpiresAt = DateTime.UtcNow.AddDays(7),
             cancellationToken
         });
+        
         _logger.LogInformation("Refresh token saved successfully");
     }
 
